@@ -5,8 +5,6 @@ function isTextWithChinese(text) {
 
 function reporter(context, options = {}) {
     const {Syntax, RuleError, report, getSource, fixer} = context;
-    const textWithHalfWidthBracketsRegex = /\((.+?)\)/g;
-    const textWithFullWidthBracketsRegex = /（(.+?)）/g;
     const bracketOption = options.bracket || 'mixed';
 
     function createRuleError(match, tip, fixWith) {
@@ -22,8 +20,8 @@ function reporter(context, options = {}) {
     return {
         [Syntax.Str](node){
             const text = getSource(node);
-            const textWithHalfWidthBrackets = textWithHalfWidthBracketsRegex.exec(text);
-            const textWithFullWidthBrackets = textWithFullWidthBracketsRegex.exec(text);
+            const textWithHalfWidthBrackets = /\((.+?)\)/g.exec(text);
+            const textWithFullWidthBrackets = /（(.+?)）/g.exec(text);
 
             if (!textWithFullWidthBrackets && !textWithHalfWidthBrackets) {
                 return;
