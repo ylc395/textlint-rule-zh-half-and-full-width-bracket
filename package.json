@@ -1,0 +1,36 @@
+{
+  "version": "1.0.0",
+  "keywords": [
+    "textlintrule",
+    "Chinese"
+  ],
+  "main": "lib/index.js",
+  "files": [
+    "lib/",
+    "src/"
+  ],
+  "scripts": {
+    "test": "textlint-scripts test",
+    "build": "textlint-scripts build",
+    "prepublish": "npm run --if-present build"
+  },
+  "devDependencies": {
+    "textlint-scripts": "^3.0.0",
+    "textlint-tester": "^5.1.15"
+  },
+  "name": "textlint-rule-zh-half-and-full-width-bracket",
+  "description": "textlint rule for checking full-width or half-width bracket in Chinese text",
+  "directories": {
+    "test": "test"
+  },
+  "author": "chenyulu",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ylc395/textlint-rule-zh-half-and-full-width-bracket.git"
+  },
+  "homepage": "https://github.com/ylc395/textlint-rule-zh-half-and-full-width-bracket",
+  "peerDependencies": {
+    "textlint": ">= 5.5.0"
+  }
+}
