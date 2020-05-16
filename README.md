@@ -47,7 +47,7 @@ textlint --rule zh-half-and-full-width-bracket README.md
 {
   "rules": {
     "zh-half-and-full-width-bracket": {
-    // which type of brackets you want
+    // type of brackets you want
     // 选择你需要的括号类型
       "bracket": "halfWidth"
     }
