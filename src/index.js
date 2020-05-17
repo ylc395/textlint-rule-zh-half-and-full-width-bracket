@@ -7,56 +7,47 @@ function reporter(context, options = {}) {
     const {Syntax, RuleError, report, getSource, fixer} = context;
     const bracketOption = options.bracket || 'mixed';
 
-    function createRuleError(match, tip, fixWith) {
-        const index = match.index;
-        return new RuleError(tip, {
-            index,
-            fix: fixer.replaceTextRange(
-                [index, index + match[0].length],
-                `${fixWith[0]}${match[1]}${fixWith[1]}`,
-        )});
-    }
-
     return {
         [Syntax.Str](node){
+            function reportRuleError(tip, fixWith) {
+                return match => {
+                    const index = match.index;
+                    const ruleError = new RuleError(tip, {
+                        index,
+                        fix: fixer.replaceTextRange(
+                            [index, index + match[0].length],
+                            `${fixWith[0]}${match[1]}${fixWith[1]}`,
+                    )});
+                    report(node, ruleError);
+                }
+            }
+
             const text = getSource(node);
-            const textWithHalfWidthBrackets = /\((.+?)\)/g.exec(text);
-            const textWithFullWidthBrackets = /（(.+?)）/g.exec(text);
+            const textWithHalfWidthBrackets = [...text.matchAll(/\((.+?)\)/g)];
+            const textWithFullWidthBrackets = [...text.matchAll(/（(.+?)）/g)];
 
-            if (!textWithFullWidthBrackets && !textWithHalfWidthBrackets) {
-                return;
+            if (bracketOption === 'halfWidth') {
+                textWithFullWidthBrackets.forEach(reportRuleError('Found full width brackets.', '()'));
             }
 
-            if (bracketOption === 'halfWidth' && textWithFullWidthBrackets) {
-                const ruleError = createRuleError(textWithFullWidthBrackets, 'Found full width brackets.', '()');
-                report(node, ruleError);
-                return;
-            }
-
-            if (bracketOption === 'fullWidth' && textWithHalfWidthBrackets) {
-                const ruleError = createRuleError(textWithHalfWidthBrackets, 'Found half width brackets.', '（）');
-                report(node, ruleError);
-                return;
+            if (bracketOption === 'fullWidth') {
+                textWithHalfWidthBrackets.forEach(reportRuleError('Found half width brackets.', '（）'));
             }
 
             if (bracketOption === 'mixed') {
-                if (textWithHalfWidthBrackets && isTextWithChinese(textWithHalfWidthBrackets[1])) {
-                    const ruleError = createRuleError(textWithHalfWidthBrackets, 'Found half width brackets around Chinese text.', '（）');
-                    report(node, ruleError);
-                    return;
-                }
+                textWithHalfWidthBrackets
+                    .filter(([matched, captured]) => isTextWithChinese(captured))
+                    .forEach(reportRuleError('Found half width brackets around Chinese text.', '（）'));
 
-                if (textWithFullWidthBrackets && !isTextWithChinese(textWithFullWidthBrackets[1])) {
-                    const ruleError = createRuleError(textWithFullWidthBrackets, 'Found full width brackets around non-Chinese text.', '()');
-                    report(node, ruleError);
-                    return;
-                }
+                textWithFullWidthBrackets
+                    .filter(([matched, captured]) => !isTextWithChinese(captured))
+                    .forEach(reportRuleError('Found full width brackets around non-Chinese text.', '()'));
             }
         }
     }
 }
 
-module.exports = {
+export default {
     linter: reporter,
     fixer: reporter,
 };

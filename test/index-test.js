@@ -2,7 +2,7 @@
 const TextLintTester = require("textlint-tester");
 const tester = new TextLintTester();
 // rule
-const rule = require("../src/index");
+const rule = require("../lib/index").default;
 // ruleName, rule, { valid, invalid }
 tester.run("half-and-full-width-bracket", rule, {
     valid: [
@@ -39,24 +39,17 @@ tester.run("half-and-full-width-bracket", rule, {
             ]
         },
         {
-            text: "text（aaaaa23）",
-            options: {bracket: 'mixed'},
+            text: "text（aaaaa23）   text(啊啊123)",
             errors: [
                 {
                     message: "Found full width brackets around non-Chinese text.",
                     line: 1,
                     column: 5
-                }
-            ]
-        },
-        {
-            text: "text(中文ddd)",
-            options: {bracket: 'mixed'},
-            errors: [
+                },
                 {
                     message: "Found half width brackets around Chinese text.",
                     line: 1,
-                    column: 5
+                    column: 21
                 }
             ]
         },

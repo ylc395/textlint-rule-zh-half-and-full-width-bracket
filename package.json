@@ -10,11 +10,15 @@
     "src/"
   ],
   "scripts": {
-    "test": "textlint-scripts test",
-    "build": "textlint-scripts build",
+    "test": "mocha test/index-test.js",
+    "build": "babel src --source-maps --out-dir lib",
     "prepublish": "npm run --if-present build"
   },
   "devDependencies": {
+    "@babel/cli": "^7.8.4",
+    "@babel/core": "^7.9.6",
+    "@babel/preset-env": "^7.9.6",
+    "mocha": "^7.1.2",
     "textlint-scripts": "^3.0.0",
     "textlint-tester": "^5.1.15"
   },
@@ -32,5 +36,8 @@
   "homepage": "https://github.com/ylc395/textlint-rule-zh-half-and-full-width-bracket",
   "peerDependencies": {
     "textlint": ">= 5.5.0"
+  },
+  "dependencies": {
+    "core-js": "3"
   }
 }
