@@ -10,7 +10,7 @@
     "src/"
   ],
   "scripts": {
-    "test": "mocha test/index-test.js",
+    "test": "npm run build && mocha test/index-test.js",
     "build": "babel src --source-maps --out-dir lib",
     "prepublish": "npm run --if-present build"
   },
