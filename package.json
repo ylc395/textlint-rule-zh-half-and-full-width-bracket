@@ -2,7 +2,10 @@
   "version": "1.0.4",
   "keywords": [
     "textlintrule",
-    "Chinese"
+    "Chinese",
+    "中文",
+    "bracket",
+    "parentheses"
   ],
   "main": "lib/index.js",
   "files": [
