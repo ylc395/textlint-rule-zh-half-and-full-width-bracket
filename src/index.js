@@ -1,3 +1,5 @@
+import { RuleHelper } from "textlint-rule-helper";
+
 function isTextWithChinese(text) {
     return /\p{Unified_Ideograph}/u.test(text);
 }
@@ -6,9 +8,20 @@ function isTextWithChinese(text) {
 function reporter(context, options = {}) {
     const {Syntax, RuleError, report, getSource, fixer} = context;
     const bracketOption = options.bracket || 'mixed';
+    const ignoredHtmlTags = Array.isArray(options.ignoredHtmlTags)
+                                ? options.ignoredHtmlTags.map(tag => tag.toLowerCase())
+                                : ['code', 'pre'];
+    const helper = new RuleHelper(context);
 
     return {
         [Syntax.Str](node){
+            const shouldSkip = helper.getParents(node)
+                                    .some(node => node.tagName && ignoredHtmlTags.includes(node.tagName));
+
+            if (shouldSkip) {
+                return;
+            }
+
             function reportRuleError(tip, fixWith) {
                 return match => {
                     const index = match.index;

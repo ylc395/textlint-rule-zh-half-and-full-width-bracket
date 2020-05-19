@@ -35,9 +35,11 @@ textlint --rule zh-half-and-full-width-bracket README.md
 ```
 
 ### 选项 Options
+
+#### `bracket`
 可配置`bracket`选项，可选的值包括`"halfWidth"`，`"fullWidth"`,`"mixed"`（默认）。
 
-`"halfWidth"`，`"fullWidth"`,`"mixed"`(defualt) is available for `bracket` option.
+`"halfWidth"`，`"fullWidth"`,`"mixed"`(default) is available for `bracket` option.
 
 + `"halfWidth"`：一律使用半角括号 Always use half-width brackets
 + `"fullWidth"`：一律使用全角括号 Always use full-width brackets
@@ -54,6 +56,10 @@ textlint --rule zh-half-and-full-width-bracket README.md
   }
 }
 ```
+#### `ignoredHtmlTags`
+搭配[textlint-plugin-html](https://github.com/textlint/textlint-plugin-html)使用时，可以配置`ignoredHtmlTags`选项，它是一个数组，表示忽略哪些 HTML 标签内的内容。默认为`["code", "pre"]`。
+
+When using with [textlint-plugin-html](https://github.com/textlint/textlint-plugin-html), add this option to ignore contents of some tags. Default Value is `["code", "pre"]`.
 
 ## 开发 Development
 ### Build

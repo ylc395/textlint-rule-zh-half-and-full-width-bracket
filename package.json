@@ -42,6 +42,7 @@
     "textlint": ">= 5.5.0"
   },
   "dependencies": {
-    "@babel/runtime-corejs3": "^7.9.6"
+    "@babel/runtime-corejs3": "^7.9.6",
+    "textlint-rule-helper": "^2.1.1"
   }
 }
